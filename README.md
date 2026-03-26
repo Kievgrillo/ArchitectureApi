@@ -59,17 +59,43 @@ Visual Studio 2022 ou VS Code
 Como rodar o projeto
 1. Clone o repositório
 ```bash
-
+git clone https://github.com/seu-usuario/ProjectReactAndNet.git
+cd ProjectReactAndNet
 ```
 2. Configure a connection string
 Abra `ProjectReactAndNet.API/appsettings.json` e ajuste conforme seu ambiente:
 ```json
-
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=MyAppDb;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}
 ```
 > Veja a seção [Connection Strings](#connection-strings) para outros cenários.
 3. Aplique as migrations
 No Package Manager Console (Visual Studio) ou no terminal:
 ```powershell
+# Visual Studio — Package Manager Console
+Add-Migration InitialCreate `
+  -Project ProjectReactAndNet.Infrastructure `
+  -StartupProject ProjectReactAndNet.API
 
+Update-Database `
+  -Project ProjectReactAndNet.Infrastructure `
+  -StartupProject ProjectReactAndNet.API
 ```
+```bash
+# Terminal (.NET CLI)
+dotnet ef migrations add InitialCreate \
+  --project ProjectReactAndNet.Infrastructure \
+  --startup-project ProjectReactAndNet.API
 
+dotnet ef database update \
+  --project ProjectReactAndNet.Infrastructure \
+  --startup-project ProjectReactAndNet.API
+```
+4. Execute a API
+```bash
+dotnet run --project ProjectReactAndNet.API
+```
+Acesse a documentação interativa em: http://localhost:5000/swagger
